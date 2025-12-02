@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../config/config.php';
-
 class Database
 {
     // Attribute to connect database
@@ -9,18 +7,16 @@ class Database
     private $user = DB_USER;
     private $password = DB_PASS;
     private $dbname = DB_NAME;
-    private $dbport = DB_PORT;
 
     // Attribute to handle database operation
-    private $pdo;
+    private $dbh;
     private $stmt;
-    private $error;
 
     // Constructor method to initialize database connection
     public function __construct()
     {
         // Data Source Name (DSN) 
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname . ';port=' . $this->dbport;
+        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
 
         // Options
         $options = [
@@ -29,17 +25,37 @@ class Database
         ];
 
         try {
-            $this->pdo = new PDO($dsn, $this->user, $this->password, $options);
+            $this->dbh = new PDO($dsn, $this->user, $this->password, $options);
         } catch (PDOException $e) {
-            $this->error = $e->getMessage();
-            echo $this->error;
+            die($e->getMessage());
         }
         
     }
 
-    public function query($sql)
+    public function query($query)
     {
-        $this->stmt = $this->pdo->prepare($sql);
+        $this->stmt = $this->dbh->prepare($query);
+    }
+
+    public function bind($param, $value, $type = null)
+    {   
+        if (is_null($type)) {
+            switch (true) {
+                case is_int($value) :
+                    $type = PDO::PARAM_INT;
+                    break;
+                case is_bool($value) :
+                    $type = PDO::PARAM_BOOL;
+                    break;
+                case is_null($value) :
+                    $type = PDO::PARAM_NULL;
+                    break;
+                default:
+                $type = PDO::PARAM_STR;
+            }
+        }
+
+        $this->stmt->bindValue($param, $value, $type);
     }
 
     public function execute()
@@ -49,22 +65,18 @@ class Database
 
     public function results()
     {
+        $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    public function result() {
+    public function result() 
+    {
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function bind($param, $value)
-    {   
-        $this->stmt->bindValue($param, $value);
-    }
-}
-
-$konek = new Database();
-if ($konek) {
-    echo "Koneksi Berhasil";
+    public function rowCount()
+    {
+        return $this->stmt->rowCount();
+    }  
 }

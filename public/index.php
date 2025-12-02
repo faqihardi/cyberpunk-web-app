@@ -1,2 +1,9 @@
-<h1>Initialy Commit for Web Programming Project</h1>
-<h1>Test 123</h1>
+<?php
+if (!session_id())
+{
+    session_start();
+}
+
+require_once '../app/init.php';
+
+$app = new App;
