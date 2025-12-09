@@ -14,13 +14,14 @@ class App {
         {
             if (file_exists('../app/controllers/' . $url[0] . 'Controller.php'))
             {
-                $this->controller = ucfirst($url[0]) . 'Controller';
+                $this->controller = ucfirst($url[0]);
                 unset($url[0]);
             }
 
         }
         
         $this->controller = ucfirst($this->controller) . 'Controller';
+        var_dump($this->controller);
         require_once '../app/controllers/' . $this->controller . '.php';
         $this->controller = new $this->controller;
 
