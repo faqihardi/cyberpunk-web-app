@@ -17,7 +17,7 @@ class AuthController extends Controller
 
         // Only handle POST requests for registration
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location:'.BASE_URL.'auth/showregister');
+            header('Location:'.BASE_URL.'/auth/showregister');
             exit;
         }
 
@@ -44,6 +44,9 @@ class AuthController extends Controller
         if ($password === '') {
             $errors[] = 'Password is required.';
         }
+        if (strlen($password) > 0 && strlen($password) < 6) {
+            $errors[] = 'Password must be at least 6 characters.';
+        }
         if ($password !== $password_confirm) {
             $errors[] = 'Passwords do not match.';
         }
@@ -55,7 +58,7 @@ class AuthController extends Controller
                 'username' => htmlspecialchars($username, ENT_QUOTES, 'UTF-8'),
                 'email' => htmlspecialchars($email, ENT_QUOTES, 'UTF-8')
             ];
-            header('Location:'.BASE_URL.'auth/showregister');
+            header('Location:'.BASE_URL.'/auth/showregister');
             exit;
         }
 
@@ -74,7 +77,7 @@ class AuthController extends Controller
                 'username' => htmlspecialchars($username, ENT_QUOTES, 'UTF-8'),
                 'email' => htmlspecialchars($email, ENT_QUOTES, 'UTF-8')
             ];
-            header('Location:'.BASE_URL.'auth/showregister');
+            header('Location:'.BASE_URL.'/auth/showregister');
             exit;
         }
 
@@ -92,7 +95,7 @@ class AuthController extends Controller
             // clear old input
             if (isset($_SESSION['old'])) unset($_SESSION['old']);
             $_SESSION['auth_success'] = 'Registration successful. Please log in.';
-            header('Location: '.BASE_URL.'auth/showlogin');
+            header('Location: '.BASE_URL.'/auth/showlogin');
             exit;
         } else {
             $_SESSION['auth_errors'] = ['Registration failed. Please try again.'];
@@ -101,7 +104,7 @@ class AuthController extends Controller
                 'username' => htmlspecialchars($username, ENT_QUOTES, 'UTF-8'),
                 'email' => htmlspecialchars($email, ENT_QUOTES, 'UTF-8')
             ];
-            header('Location:'.BASE_URL.'auth/showregister');
+            header('Location:'.BASE_URL.'/auth/showregister');
             exit;
         }
     }
@@ -112,53 +115,60 @@ class AuthController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location:'.BASE_URL.'auth/showlogin');
+            header('Location:'.BASE_URL.'/auth/showlogin');
             exit;
         }
 
         require_once __DIR__ . '/../core/Database.php';
 
-        $username = isset($_POST['username']) ? trim($_POST['username']) : ''; // username or email
+        $username = isset($_POST['username']) ? trim($_POST['username']) : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
 
         if ($username === '' || $password === '') {
             $_SESSION['auth_errors'] = ['Username/email and password are required.'];
             $_SESSION['old'] = ['username' => htmlspecialchars($username, ENT_QUOTES, 'UTF-8')];
-            header('Location:'.BASE_URL.'auth/showlogin');
+            header('Location:'.BASE_URL.'/auth/showlogin');
             exit;
         }
 
         $db = new Database();
-        $db->query('SELECT * FROM users WHERE username = :username LIMIT 1');
+        $db->query('SELECT * FROM users WHERE username = :username OR email = :username LIMIT 1');
         $db->bind(':username', $username);
         $user = $db->result();
 
         if (!$user) {
             $_SESSION['auth_errors'] = ['Invalid credentials.'];
             $_SESSION['old'] = ['username' => htmlspecialchars($username, ENT_QUOTES, 'UTF-8')];
-            header('Location:'.BASE_URL.'auth/showlogin');
+            header('Location:'.BASE_URL.'/auth/showlogin');
             exit;
         }
 
         if (!password_verify($password, $user['password'])) {
             $_SESSION['auth_errors'] = ['Invalid credentials.'];
             $_SESSION['old'] = ['username' => htmlspecialchars($username, ENT_QUOTES, 'UTF-8')];
-            header('Location:'.BASE_URL.'auth/showlogin');
+            header('Location:'.BASE_URL.'/auth/showlogin');
             exit;
         }
 
-        // Successful login: store minimal user info in session
+        // Successful login: regenerate session id to prevent fixation
+        session_regenerate_id(true);
+
         $_SESSION['user'] = [
             'user_id' => $user['user_id'],
             'name' => $user['name'],
             'username' => $user['username'],
             'email' => $user['email'],
-            'is_admin' => isset($user['is_admin']) ? (int)$user['is_admin'] : 0
+            'is_admin' => (int) $user['is_admin']
         ];
 
-        $_SESSION['auth_success'] = 'Logged in successfully.';
-        header('Location:'.BASE_URL.'home/test');
+        // 🔥 REDIRECT BERDASARKAN ROLE
+        if ((int)$user['is_admin'] === 1) {
+            header('Location: ' . BASE_URL . '/admindashboard');
+        } else {
+            header('Location: ' . BASE_URL . '/user/dashboard');
+        }
         exit;
+
     }
 
     public function logout() {
@@ -167,19 +177,21 @@ class AuthController extends Controller
         }
 
         // Unset and destroy session
-        if (isset($_SESSION['user'])) {
-            unset($_SESSION['user']);
+        // Clear session variables
+        $_SESSION = [];
+
+        // Clear session cookie
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params['path'], $params['domain'],
+                $params['secure'], $params['httponly']
+            );
         }
 
-        // Clear any auth messages
-        if (isset($_SESSION['auth_errors'])) {
-            unset($_SESSION['auth_errors']);
-        }
-        if (isset($_SESSION['auth_success'])) {
-            unset($_SESSION['auth_success']);
-        }
-
+        session_unset();
         session_destroy();
+
         header('Location:'.BASE_URL);
         exit;
     }

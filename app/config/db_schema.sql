@@ -1,8 +1,9 @@
-create table users (
-    -> user_id int not null primary key auto_increment,
-    -> name varchar(255) not null,
-    -> username varchar(255) not null,
-    -> email varchar(255) not null,
-    -> password text not null,
-    -> is_admin int(1)
-);
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    is_admin TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
