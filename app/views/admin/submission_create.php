@@ -2,6 +2,7 @@
 $adminName = $data['adminName'] ?? 'Admin';
 $editMode = $data['editMode'] ?? false;
 $submission = $data['submission'] ?? [
+    'title' => '',
     'resolution' => '',
     'theme' => '',
     'author' => '',
@@ -37,9 +38,9 @@ $submission = $data['submission'] ?? [
         
         <!-- Left: Image Preview -->
         <div class="image-preview-section">
-            <img id="previewImage" 
-                 src="<?= !empty($submission['image']) ? BASE_URL . htmlspecialchars($submission['image']) : BASE_URL . '/images/placeholder.jpg' ?>" 
-                 alt="Preview">
+              <img id="previewImage" 
+                  src="<?= !empty($submission['image'] ?? '') ? BASE_URL . htmlspecialchars($submission['image']) : BASE_URL . '/images/placeholder.jpg' ?>" 
+                  alt="Preview">
         </div>
         
         <!-- Right: Form -->
@@ -53,39 +54,48 @@ $submission = $data['submission'] ?? [
                 <?php endif; ?>
                 
                 <div class="form-group">
-                    <label>Resolution</label>
-                    <input type="text" 
-                           name="resolution" 
-                           value="<?= htmlspecialchars($submission['resolution']) ?>" 
-                           placeholder="3840 x 2160"
-                           required>
+                          <label>Title</label>
+                          <input type="text" 
+                              name="title" 
+                              value="<?= htmlspecialchars($submission['title'] ?? '') ?>" 
+                              placeholder="Submission Title"
+                              required>
                 </div>
                 
                 <div class="form-group">
-                    <label>Theme</label>
-                    <input type="text" 
-                           name="theme" 
-                           value="<?= htmlspecialchars($submission['theme']) ?>" 
-                           placeholder="City 77 Streets"
-                           required>
+                          <label>Resolution</label>
+                          <input type="text" 
+                              name="resolution" 
+                              value="<?= htmlspecialchars($submission['resolution'] ?? '') ?>" 
+                              placeholder="3840 x 2160"
+                              required>
                 </div>
                 
                 <div class="form-group">
-                    <label>Author</label>
-                    <input type="text" 
-                           name="author" 
-                           value="<?= htmlspecialchars($submission['author']) ?>" 
-                           placeholder="argel"
-                           required>
+                          <label>Theme</label>
+                          <input type="text" 
+                              name="theme" 
+                              value="<?= htmlspecialchars($submission['theme'] ?? '') ?>" 
+                              placeholder="City 77 Streets"
+                              required>
                 </div>
                 
                 <div class="form-group">
-                    <label>User</label>
-                    <input type="text" 
-                           name="user" 
-                           value="<?= htmlspecialchars($submission['user']) ?>" 
-                           placeholder="Admin 1"
-                           required>
+                          <label>Author</label>
+                          <input type="text" 
+                              name="author" 
+                              value="<?= htmlspecialchars($submission['author'] ?? '') ?>" 
+                              placeholder="argel"
+                              required>
+                </div>
+                
+                <div class="form-group">
+                          <label>User</label>
+                          <input type="text" 
+                              name="user" 
+                              value="<?= htmlspecialchars($submission['user'] ?? '') ?>" 
+                              placeholder="Admin 1"
+                              required>
                 </div>
                 
                 <div class="form-group">

@@ -4,6 +4,10 @@ class GalleryController extends Controller
 {
     public function index() 
     {
-        $this->view('gallery/index');    
+        $submissionModel = $this->model('Submission');
+        $submissions = $submissionModel->getAll();
+        $this->view('gallery/index', [
+            'submissions' => $submissions
+        ]);
     }
 }

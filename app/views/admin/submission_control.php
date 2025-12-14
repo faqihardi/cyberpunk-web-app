@@ -39,10 +39,10 @@
                 <img src="<?= BASE_URL . htmlspecialchars($selected['image']) ?>" alt="Preview">
                 <div class="preview-info">
                     <p>
-                        <?= htmlspecialchars($selected['resolution']) ?> |
-                        <?= htmlspecialchars($selected['theme']) ?> |
-                        Author: <?= htmlspecialchars($selected['author']) ?> |
-                        Uploader: <?= htmlspecialchars($selected['user']) ?>
+                        <?= htmlspecialchars($selected['resolution'] ?? '') ?> |
+                        <?= htmlspecialchars($selected['theme'] ?? '') ?> |
+                        Author: <?= htmlspecialchars($selected['author'] ?? '') ?> |
+                        Uploader: <?= htmlspecialchars($selected['user'] ?? ($selected['uploader'] ?? '')) ?>
                     </p>
                 </div>
             <?php endif; ?>
