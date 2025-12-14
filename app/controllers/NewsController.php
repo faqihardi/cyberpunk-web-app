@@ -4,6 +4,11 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $this->view('news/index');   
+        $newsModel = $this->model('News');
+        $newsList = $newsModel->getAll();
+        $news = !empty($newsList) ? $newsList[0] : null;
+        $this->view('news/index', [
+            'news' => $news
+        ]);
     }
 }

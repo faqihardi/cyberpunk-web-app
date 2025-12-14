@@ -5,14 +5,13 @@ class AdminnewsController extends AdminController
     public function index()
     {
         $admin = $this->getAdmin();
-        
-        // Dummy sementara - nanti ambil dari database
-        $newsData = [
-            'version' => 'update 2.3 Patch Notes',
-            'header'  => 'Added 2 new vehicles',
-            'content' => 'Update 2.3 lands tomorrow on PC...'
+        $newsModel = $this->model('News');
+        $newsList = $newsModel->getAll();
+        $newsData = !empty($newsList) ? $newsList[0] : [
+            'version' => '',
+            'header' => '',
+            'content' => ''
         ];
-
         $this->view('admin/news_control', [
             'news'      => $newsData,
             'adminName' => $admin['name']
@@ -37,10 +36,26 @@ class AdminnewsController extends AdminController
             exit;
         }
 
-        // TODO: Simpan ke database
-        // $newsModel = $this->model('News');
-        // $newsModel->update($version, $header, $content);
-
+        $newsModel = $this->model('News');
+        $newsList = $newsModel->getAll();
+        $admin = $this->getAdmin();
+        if (!empty($newsList)) {
+            // Update the latest news entry
+            $newsModel->update($newsList[0]['id'], [
+                'version' => $version,
+                'header' => $header,
+                'content' => $content,
+                'updated_by' => $admin['user_id']
+            ]);
+        } else {
+            // Create new news entry
+            $newsModel->create([
+                'version' => $version,
+                'header' => $header,
+                'content' => $content,
+                'updated_by' => $admin['user_id']
+            ]);
+        }
         // TODO: Set flash message untuk sukses
         header('Location: ' . BASE_URL . '/adminnews');
         exit;

@@ -21,7 +21,7 @@ class AuthController extends Controller
             exit;
         }
 
-        require_once __DIR__ . '/../core/Database.php';
+        $userModel = $this->model('User');
 
         // Simple input retrieval and trimming
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
@@ -62,15 +62,8 @@ class AuthController extends Controller
             exit;
         }
 
-        $db = new Database();
-
         // Check for existing username or email
-        $db->query('SELECT * FROM users WHERE username = :username OR email = :email');
-        $db->bind(':username', $username);
-        $db->bind(':email', $email);
-        $existing = $db->result();
-
-        if ($existing) {
+        if ($userModel->existsByUsernameOrEmail($username, $email)) {
             $_SESSION['auth_errors'] = ['Username or email already taken.'];
             $_SESSION['old'] = [
                 'name' => htmlspecialchars($name, ENT_QUOTES, 'UTF-8'),
@@ -83,16 +76,15 @@ class AuthController extends Controller
 
         // Hash password and insert user
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $created = $userModel->create([
+            'name' => $name,
+            'username' => $username,
+            'email' => $email,
+            'password' => $password_hash,
+            'is_admin' => 0
+        ]);
 
-        $db->query('INSERT INTO users (name, username, email, password, is_admin) VALUES (:name, :username, :email, :password, :is_admin)');
-        $db->bind(':name', $name);
-        $db->bind(':username', $username);
-        $db->bind(':email', $email);
-        $db->bind(':password', $password_hash);
-        $db->bind(':is_admin', 0);
-
-        if ($db->execute()) {
-            // clear old input
+        if ($created) {
             if (isset($_SESSION['old'])) unset($_SESSION['old']);
             $_SESSION['auth_success'] = 'Registration successful. Please log in.';
             header('Location: '.BASE_URL.'/auth/showlogin');
@@ -119,8 +111,7 @@ class AuthController extends Controller
             exit;
         }
 
-        require_once __DIR__ . '/../core/Database.php';
-
+        $userModel = $this->model('User');
         $username = isset($_POST['username']) ? trim($_POST['username']) : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
 
@@ -131,10 +122,7 @@ class AuthController extends Controller
             exit;
         }
 
-        $db = new Database();
-        $db->query('SELECT * FROM users WHERE username = :username OR email = :username LIMIT 1');
-        $db->bind(':username', $username);
-        $user = $db->result();
+        $user = $userModel->findByUsernameOrEmail($username);
 
         if (!$user) {
             $_SESSION['auth_errors'] = ['Invalid credentials.'];

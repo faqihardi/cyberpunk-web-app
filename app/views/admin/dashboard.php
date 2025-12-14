@@ -31,6 +31,9 @@ $admin_email = $data['admin_email'] ?? '';
             <p><?= htmlspecialchars($admin_email) ?></p>
             <p class="admin-password">••••••••••••</p>
         </div>
+        <form action="<?= BASE_URL; ?>/auth/logout" method="post">
+            <button class="panel-btn">Logout</button>
+        </form>
     </div>
     
     <!-- Control Panel Buttons -->
