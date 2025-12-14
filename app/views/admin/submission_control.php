@@ -15,8 +15,9 @@
     
     <div class="submission-header">
         <h1 class="panel-title">Submission Control Panel</h1>
-        <a href="<?= BASE_URL; ?>/admin/dashboard"><span class="admin-label"><?= htmlspecialchars($adminName) ?></span></a>
-        
+        <a href="<?= BASE_URL; ?>/admindashboard">
+            <span class="admin-label"><?= htmlspecialchars($adminName) ?></span>
+        </a>
     </div>
     
     <div class="submission-content">
@@ -26,7 +27,7 @@
             <?php foreach ($submissions as $sub): ?>
                 <button
                     class="submission-item <?= $sub['id'] == $selectedId ? 'active' : '' ?>"
-                    onclick="location.href='<?= BASE_URL; ?>/admin/submission-control/<?= $sub['id'] ?>'">
+                    onclick="location.href='<?= BASE_URL; ?>/adminsubmission/index/<?= $sub['id'] ?>'">
                     <?= htmlspecialchars($sub['title']) ?>
                 </button>
             <?php endforeach; ?>
@@ -50,7 +51,7 @@
         <!-- RIGHT -->
         <div class="submission-actions">
             <button class="action-btn"
-                onclick="location.href='<?= BASE_URL; ?>/admin/submission/edit/<?= $selectedId ?>'">
+                onclick="location.href='<?= BASE_URL; ?>/adminsubmission/edit/<?= $selectedId ?>'">
                 Edit Submission
             </button>
 
@@ -60,7 +61,7 @@
             </button>
 
             <button class="action-btn"
-                onclick="location.href='<?= BASE_URL; ?>/admin/submission/create'">
+                onclick="location.href='<?= BASE_URL; ?>/adminsubmission/create'">
                 Create Submission
             </button>
 
@@ -82,7 +83,7 @@
 function deleteSubmission(id) {
     if (confirm('Are you sure you want to delete this submission?')) {
         window.location.href =
-            '<?= BASE_URL; ?>/admin/submission/delete/' + id;
+            '<?= BASE_URL; ?>/adminsubmission/delete/' + id;
     }
 }
 

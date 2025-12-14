@@ -7,21 +7,36 @@ class App {
 
     public function __construct()
     {
+        spl_autoload_register(function($class) {
+            $paths = [
+                '../app/controllers/' . $class . '.php',
+                '../app/core/' . $class . '.php',
+                '../app/models/' . $class . '.php'
+            ];
+            
+            foreach ($paths as $file) {
+                if (file_exists($file)) {
+                    require_once $file;
+                    return;
+                }
+            }
+        });
+
         $url = $this->parseURL();
 
         // Controllers
         if (isset($url[0]))
         {
-            if (file_exists('../app/controllers/' . $url[0] . 'Controller.php'))
+            $controllerName = ucfirst($url[0]) . 'Controller';
+            if (file_exists('../app/controllers/' . $controllerName . '.php'))
             {
                 $this->controller = ucfirst($url[0]);
                 unset($url[0]);
             }
-
         }
         
         $this->controller = ucfirst($this->controller) . 'Controller';
-        var_dump($this->controller);
+        
         require_once '../app/controllers/' . $this->controller . '.php';
         $this->controller = new $this->controller;
 
@@ -41,7 +56,6 @@ class App {
             $this->params = array_values($url);
         }
 
-        // Run
         call_user_func_array([$this->controller, $this->method], $this->params);
     }
 
@@ -54,5 +68,6 @@ class App {
             $url = explode('/', $url);
             return $url;
         }
+        return [];
     }
 }

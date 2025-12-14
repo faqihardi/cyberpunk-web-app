@@ -17,7 +17,7 @@ class AdminController extends Controller
         }
     }
 
-    protected function admin()
+    protected function getAdmin()
     {
         return $_SESSION['user'];
     }

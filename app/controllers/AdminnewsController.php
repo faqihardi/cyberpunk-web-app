@@ -4,7 +4,9 @@ class AdminnewsController extends AdminController
 {
     public function index()
     {
-        // Dummy sementara
+        $admin = $this->getAdmin();
+        
+        // Dummy sementara - nanti ambil dari database
         $newsData = [
             'version' => 'update 2.3 Patch Notes',
             'header'  => 'Added 2 new vehicles',
@@ -13,7 +15,7 @@ class AdminnewsController extends AdminController
 
         $this->view('admin/news_control', [
             'news'      => $newsData,
-            'adminName' => $this->admin()['name']
+            'adminName' => $admin['name']
         ]);
     }
 
@@ -24,13 +26,22 @@ class AdminnewsController extends AdminController
             exit;
         }
 
-        $version = trim($_POST['version']);
-        $header  = trim($_POST['header']);
-        $content = trim($_POST['content']);
+        $version = trim($_POST['version'] ?? '');
+        $header  = trim($_POST['header'] ?? '');
+        $content = trim($_POST['content'] ?? '');
 
-        // TODO:
-        // $this->model('News')->update($version, $header, $content);
+        // Validasi input
+        if (empty($version) || empty($header) || empty($content)) {
+            // TODO: Set flash message untuk error
+            header('Location: ' . BASE_URL . '/adminnews');
+            exit;
+        }
 
+        // TODO: Simpan ke database
+        // $newsModel = $this->model('News');
+        // $newsModel->update($version, $header, $content);
+
+        // TODO: Set flash message untuk sukses
         header('Location: ' . BASE_URL . '/adminnews');
         exit;
     }

@@ -9,19 +9,21 @@
 
 <body class="news-control-page">
 
-<div class="admin-bg"></div>
+<!-- <div class="admin-bg"></div>  --> 
 
 <div class="news-control-container">
     
     <!-- Header -->
     <div class="submission-header">
         <h1 class="panel-title">News Control Panel</h1>
-        <span class="admin-label"><?= htmlspecialchars($adminName) ?></span>
+        <a href="<?= BASE_URL; ?>/admindashboard">
+            <span class="admin-label"><?= htmlspecialchars($adminName) ?></span>
+        </a>
     </div>
-    
+
     <form method="POST" 
-          action="<?= BASE_URL; ?>/admin/news-control/update"
-          class="news-form">
+      action="<?= BASE_URL; ?>/adminnews/update"
+      class="news-form">
         
         <!-- Game Update Version -->
         <div class="news-section">

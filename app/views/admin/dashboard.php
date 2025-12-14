@@ -39,17 +39,16 @@ $admin_email = $data['admin_email'] ?? '';
         <div class="corner-deco top-right"></div>
         <div class="corner-deco bottom-left"></div>
         <div class="corner-deco bottom-right"></div>
-        
         <button onclick="location.href='<?= BASE_URL; ?>/adminsubmission'" class="panel-btn">
             Submission Control Panel
         </button>
-        
+
         <button onclick="location.href='<?= BASE_URL; ?>/adminnews'" class="panel-btn">
             News Control Panel
         </button>
-        
-        <button onclick="location.href='/?page=account_control'" class="panel-btn">
-            Account Edit
+
+        <button onclick="location.href='<?= BASE_URL; ?>/adminaccount'" class="panel-btn">
+            Account Control
         </button>
     </div>
 

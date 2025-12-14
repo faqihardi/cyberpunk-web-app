@@ -11,17 +11,7 @@ class Controller
 
     public function model($model)
     {
-        $file = __DIR__ . '/../models/' . $model . '.php';
-        if (!file_exists($file)) {
-            throw new Exception("Model file not found: $file");
-        }
-
-        require_once $file;
-
-        if (!class_exists($model)) {
-            throw new Exception("Model class not found: $model");
-        }
-
+        require_once '../app/models/' . $model . '.php';
         return new $model;
     }
 }
