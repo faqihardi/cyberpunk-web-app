@@ -6,7 +6,7 @@ class CharactersController extends Controller
         "v_male" => [
             "name" => "V (Male)",
             "img"  => "/img/vmale.png",
-            "desc" => "V is the customizable male protagonist of Cyberpunk 2077, a determined mercenary trying to rise within Night City's brutal streets. Known for his calm, low-toned voice and sharp attitude, he balances combat skill, cyberware upgrades, and street instincts. His life changes after the Relic implant binds his consciousness to Johnny Silverhand, pushing him into a struggle for identity, survival, and control. V's morality and personality shift based on player choices, making him a flexible and layered character.",
+            "desc" => "V is the customizable male protagonist of Cyberpunk 2077, a determined mercenary trying to rise within Night City’s brutal streets. Known for his calm, low-toned voice and sharp attitude, he balances combat skill, cyberware upgrades, and street instincts. His life changes after the Relic implant binds his consciousness to Johnny Silverhand, pushing him into a struggle for identity, survival, and control. V’s morality and personality shift based on player choices, making him a flexible and layered character.",
             "facts" => [
                 "Voiced by Gavin Drea.",
                 "Male V's dialogue often has a drier, more sarcastic tone.",
@@ -17,55 +17,60 @@ class CharactersController extends Controller
         "v_female" => [
             "name" => "V (Female)",
             "img"  => "/img/vfemale.png",
-            "desc" => "V is the customizable female protagonist of Cyberpunk 2077, a determined mercenary trying to rise within Night City's brutal streets. Known for her emotional delivery and sharp attitude, she balances combat skill, cyberware upgrades, and street instincts.",
+            "desc" => "V is a skilled mercenary navigating the ruthless streets of Night City. As the female version, she combines sharp instincts, adaptability, and a bold presence. After obtaining a dangerous biochip containing Johnny Silverhand’s engram, V is forced into a fight not only against the city’s power players but also for her own identity.
+            Capable in gunplay, hacking, and close combat, Female V can shift from empathetic to ruthless depending on the player’s choices. Her story often highlights loyalty, survival, and the emotional weight of her connections—especially with characters like Judy Alvarez and Panam Palmer. Stylish, cyber-enhanced, and fiercely determined, V stands as one of Night City’s most versatile mercs.",
             "facts" => [
-                "Voiced by Cherami Leigh.",
-                "Female V's dialogue has a more emotional tone.",
-                "Different romance options available compared to male V."
+                "“V” isn’t an acronym—her full name is intentionally left undefined.",
+                "Voiced by Cherami Leigh, known for major game and anime roles.",
+                "Female V has unique mocap animations, giving her distinct movement and personality.",
             ]
         ],
 
         "char6" => [
-            "name" => "Johnny Silverhand",
+            "name" => "Judy Alvarez",
             "img"  => "/img/img2.png",
-            "desc" => "Johnny Silverhand is a legendary rockerboy and the digital ghost haunting V's mind.",
+            "desc" => "Judy Alvarez is one of Night City’s most talented braindance editors and a key member of the Mox. Brilliant, creative, and fiercely principled, she uses her technical mastery not for fame but to protect vulnerable people—especially workers exploited in the braindance industry.
+            Judy is sharp-minded, emotionally intuitive, and unafraid to fight for what she believes in. Beneath her rebellious appearance lies a compassionate core, making her one of the most grounded and sincere allies V can have. Her relationship with V can develop into a deep, heartfelt romance—only available for Female V.",
             "facts" => [
-                "Voiced and motion-captured by Keanu Reeves.",
-                "Former lead singer of Samurai.",
-                "Died in 2023 during the assault on Arasaka Tower."
+                "Judy is considered one of the best braindance specialists in Night City, with skills rivaling corporate-level technicians.",
+                "Judy’s voice actress is Carla Tassara, praised for emotional and nuanced performances.",
+                "Her background in Laguna Bend, a town flooded due to megacorporate expansion, shaped her distrust of big corporations."
             ]
         ],
 
         "char7" => [
-            "name" => "Judy Alvarez",
+            "name" => "Panam Palmer",
             "img"  => "/img/img3.png",
-            "desc" => "Judy Alvarez is a talented braindance technician working at Lizzie's Bar.",
+            "desc" => "Panam Palmer is a bold, resourceful nomad from the Aldecaldos clan. Known for her sharp instincts, exceptional combat skills, and unmatched driving and sniping abilities, Panam embodies the spirit of independence that defines the Badlands.
+            Headstrong and deeply loyal, she often clashes with authority but fiercely protects those she considers family. Her partnership with V can grow into a strong bond built on trust, shared fights, and mutual respect—developing into a romantic relationship for Male V. Panam represents freedom, loyalty, and the promise of life beyond Night City’s chaos.",
             "facts" => [
-                "Expert in braindance editing.",
-                "Romance option only for female V.",
-                "Member of The Mox."
+                "Her voice actress, Emily Woo Zeller, is praised for making Panam feel grounded, emotional, and authentic.",
+                "Panam’s iconic Quadra Type-66 “Javelina” is one of the best off-road vehicles in the game.",
+                "Panam is a former Aldecaldos scout and one of the most skilled drivers and sharpshooters in the Badlands.",
             ]
         ],
 
         "char8" => [
-            "name" => "Panam Palmer",
+            "name" => "Alt Cunningham",
             "img"  => "/img/img5.png",
-            "desc" => "Panam Palmer is a skilled nomad from the Aldecaldos clan.",
+            "desc" => "Alt Cunningham is one of the most brilliant netrunners in history and the creator of the legendary Soulkiller program. Once a rising star in Night City’s tech scene, she became the target of Arasaka, who forcibly digitized her consciousness.
+            Now existing as a post-human entity within the Old Net, Alt is powerful, enigmatic, and far beyond human limitations. Her connection to Johnny Silverhand is emotional yet complicated, shaped by loss, memory, and the evolution of her digital self.",
             "facts" => [
-                "Expert driver.",
-                "Romance option only for male V.",
-                "Aldecaldos nomad."
+                "Alt was originally a gifted netrunner working for ITS, long before becoming a digital consciousness.",
+                "Soulkiller—her creation—can copy and destroy minds, and changed the future of the Net forever.",
+                "Alt’s influence extends into multiple endings, especially involving V’s fate.",
             ]
         ],
 
         "char9" => [
-            "name" => "Jackie Welles",
+            "name" => "Viktor Vektor",
             "img"  => "/img/img6.png",
-            "desc" => "Jackie Welles is V's best friend and partner in crime.",
+            "desc" => "Viktor Vektor is a trusted ripperdoc in Watson and one of the few people in Night City who genuinely cares about his clients. Known for his calm demeanor, steady hands, and old-school ethics, Viktor offers high-quality cyberware without the predatory practices seen elsewhere in the city.
+            He becomes a mentor and father-figure to V, providing guidance, medical support, and grounded wisdom amid the chaos of Night City.",
             "facts" => [
-                "Loyal friend of V.",
-                "Former Valentinos member.",
-                "Dreams of becoming a legend."
+                "Viktor is an old-school ripperdoc, preferring reliable tech over flashy experimental implants.",
+                "He used to be an underground boxer, giving him his strong, calm presence.",
+                "Unlike many ripperdocs, Viktor prioritizes safety and trust over profit.",
             ]
         ]
     ];
