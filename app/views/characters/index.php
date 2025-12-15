@@ -51,7 +51,7 @@
                              alt="<?= htmlspecialchars($char['name']) ?>">
 
                         <button class="char-btn"
-                            onclick="location.href='<?= BASE_URL; ?>/characters/detail/<?= $char['name']; ?>'">
+                            onclick="location.href='<?= BASE_URL; ?>/characters/detail/<?= $char['id']; ?>'">
                             LEARN MORE
                         </button>
                     </div>

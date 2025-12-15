@@ -6,18 +6,8 @@ class AdminaccountController extends AdminController
     {
         $admin = $this->getAdmin();
         
-        // TODO: Ambil dari database
-        // $userModel = $this->model('User');
-        // $users = $userModel->getAll();
-        
-        // Dummy data sementara
-        $users = [
-            ['id' => 1, 'username' => 'Admin 1', 'email' => 'hexayam@gmail.com', 'password' => '12345678910112', 'is_admin' => 1],
-            ['id' => 2, 'username' => 'User 1', 'email' => 'user1@gmail.com', 'password' => 'pass123', 'is_admin' => 0],
-            ['id' => 3, 'username' => 'User 2', 'email' => 'user2@gmail.com', 'password' => 'pass456', 'is_admin' => 0],
-            ['id' => 4, 'username' => 'User 3', 'email' => 'user3@gmail.com', 'password' => 'pass789', 'is_admin' => 0],
-            ['id' => 5, 'username' => 'Admin 2', 'email' => 'admin2@gmail.com', 'password' => 'admin456', 'is_admin' => 1],
-        ];
+        $userModel = $this->model('User');
+        $users = $userModel->getAll();
 
         // Set default selected ID ke user pertama jika tidak ada
         if ($selectedId === null && !empty($users)) {
@@ -81,20 +71,17 @@ class AdminaccountController extends AdminController
             exit;
         }
 
-        // TODO: Update ke database
-        // $userModel = $this->model('User');
-        // $updateData = [
-        //     'username' => $username,
-        //     'email' => $email,
-        //     'is_admin' => $isAdmin
-        // ];
-        // 
-        // // Jika password diisi, hash dan update
-        // if (!empty($password)) {
-        //     $updateData['password'] = password_hash($password, PASSWORD_DEFAULT);
-        // }
-        // 
-        // $userModel->update($userId, $updateData);
+        $userModel = $this->model('User');
+        $updateData = [
+            'name' => trim($_POST['name'] ?? ''),
+            'username' => $username,
+            'email' => $email,
+            'is_admin' => $isAdmin
+        ];
+        if (!empty($password)) {
+            $updateData['password'] = password_hash($password, PASSWORD_DEFAULT);
+        }
+        $userModel->update($userId, $updateData);
 
         // TODO: Set flash message - success
         header('Location: ' . BASE_URL . '/adminaccount/index/' . $userId);
@@ -123,9 +110,8 @@ class AdminaccountController extends AdminController
             exit;
         }
 
-        // TODO: Hapus dari database
-        // $userModel = $this->model('User');
-        // $userModel->delete($userId);
+        $userModel = $this->model('User');
+        $userModel->delete($userId);
 
         // TODO: Set flash message - success
         header('Location: ' . BASE_URL . '/adminaccount');
@@ -167,22 +153,16 @@ class AdminaccountController extends AdminController
             exit;
         }
 
-        // TODO: Cek email sudah ada atau belum
-        // $userModel = $this->model('User');
-        // if ($userModel->emailExists($email)) {
-        //     // Set flash message - email already exists
-        //     header('Location: ' . BASE_URL . '/adminaccount/create');
-        //     exit;
-        // }
-
-        // TODO: Simpan ke database
-        // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        // $userModel->create([
-        //     'username' => $username,
-        //     'email' => $email,
-        //     'password' => $hashedPassword,
-        //     'is_admin' => $isAdmin
-        // ]);
+        $userModel = $this->model('User');
+        // Optionally check for duplicate email/username here
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $userModel->create([
+            'name' => trim($_POST['name'] ?? ''),
+            'username' => $username,
+            'email' => $email,
+            'password' => $hashedPassword,
+            'is_admin' => $isAdmin
+        ]);
 
         // TODO: Set flash message - success
         header('Location: ' . BASE_URL . '/adminaccount');

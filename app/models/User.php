@@ -1,3 +1,4 @@
+    
 <?php
 
 class User
@@ -10,6 +11,12 @@ class User
         $this->db = new Database();
     }
 
+    public function getAll()
+    {
+        $this->db->query('SELECT user_id as id, name, username, email, is_admin FROM users ORDER BY user_id ASC');
+        return $this->db->results();
+    }
+    
     public function create($data)
     {
         $this->db->query('INSERT INTO users (name, username, email, password, is_admin) VALUES (:name, :username, :email, :password, :is_admin)');
@@ -23,9 +30,35 @@ class User
 
     public function findById($id)
     {
-        $this->db->query('SELECT * FROM users WHERE user_id = :id');
+        $this->db->query('SELECT user_id as id, name, username, email, is_admin FROM users WHERE user_id = :id');
         $this->db->bind(':id', $id);
         return $this->db->result();
+    }
+
+    public function update($id, $data)
+    {
+        $query = 'UPDATE users SET name = :name, username = :username, email = :email, is_admin = :is_admin';
+        if (!empty($data['password'])) {
+            $query .= ', password = :password';
+        }
+        $query .= ' WHERE user_id = :id';
+        $this->db->query($query);
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':username', $data['username']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':is_admin', $data['is_admin']);
+        if (!empty($data['password'])) {
+            $this->db->bind(':password', $data['password']);
+        }
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    public function delete($id)
+    {
+        $this->db->query('DELETE FROM users WHERE user_id = :id');
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
     }
 
     public function findByUsernameOrEmail($ident)

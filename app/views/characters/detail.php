@@ -16,26 +16,30 @@
 
 <section class="character-detail">
     <div class="detail-left">
-        <img src="<?= BASE_URL . $data['img'] ?>"
-             class="detail-img"
-             id="characterImg"
-             alt="<?= htmlspecialchars($data['name']) ?>">
+           <img src="<?= BASE_URL . ($data['image'] ?? '') ?>"
+               class="detail-img"
+               id="characterImg"
+               alt="<?= htmlspecialchars($data['name'] ?? '') ?>">
 
-        <h2 class="char-name"><?= htmlspecialchars($data['name']) ?></h2>
+           <h2 class="char-name"><?= htmlspecialchars($data['name'] ?? '') ?></h2>
     </div>
 
     <div class="detail-right">
         <h2 class="section-title">Description</h2>
-        <p class="description-text"><?= htmlspecialchars($data['desc']) ?></p>
+        <p class="description-text"><?= htmlspecialchars($data['description'] ?? '') ?></p>
 
         <h2 class="section-title">Fun Facts</h2>
         <ul class="facts-box">
-            <?php foreach ($data['facts'] as $i => $fact): ?>
-                <li>
-                    <span class="fact-number"><?= $i + 1 ?>.</span>
-                    <?= htmlspecialchars($fact) ?>
-                </li>
-            <?php endforeach; ?>
+            <?php if (!empty($facts) && is_array($facts)): ?>
+                <?php foreach ($facts as $i => $fact): ?>
+                    <li>
+                        <span class="fact-number"><?= $i + 1 ?>.</span>
+                        <?= htmlspecialchars($fact['fact']) ?>
+                    </li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li>No facts available.</li>
+            <?php endif; ?>
         </ul>
     </div>
 </section>

@@ -38,7 +38,7 @@ $selectedId = $data['selectedId'] ?? null;
                     onclick="location.href='<?= BASE_URL; ?>/adminaccount/index/<?= $user['id'] ?>'">
                     <?= htmlspecialchars($user['username']) ?>
                     <?php if ($user['is_admin'] == 1): ?>
-                        <span class="badge-admin">Admin</span>
+                        <span class="badge-admin"></span>
                     <?php endif; ?>
                 </button>
             <?php endforeach; ?>
@@ -46,15 +46,23 @@ $selectedId = $data['selectedId'] ?? null;
         
         <!-- Center: User Details Form -->
         <div class="user-details">
-            <?php if ($selected): ?>
+            <?php if ($selected && is_array($selected)): ?>
                 <form method="POST" id="userForm" action="<?= BASE_URL; ?>/adminaccount/update">
-                    <input type="hidden" name="user_id" value="<?= $selected['id'] ?>">
+                    <input type="hidden" name="user_id" value="<?= isset($selected['id']) ? htmlspecialchars($selected['id']) : '' ?>">
                     
+                    <div class="detail-row">
+                        <label>Name :</label>
+                        <input type="text" 
+                               name="name" 
+                               value="<?= isset($selected['name']) ? htmlspecialchars($selected['name']) : '' ?>"
+                               required>
+                    </div>
+
                     <div class="detail-row">
                         <label>Username :</label>
                         <input type="text" 
                                name="username" 
-                               value="<?= htmlspecialchars($selected['username']) ?>"
+                               value="<?= isset($selected['username']) ? htmlspecialchars($selected['username']) : '' ?>"
                                required>
                     </div>
                     
@@ -62,7 +70,7 @@ $selectedId = $data['selectedId'] ?? null;
                         <label>E-mail :</label>
                         <input type="email" 
                                name="email" 
-                               value="<?= htmlspecialchars($selected['email']) ?>"
+                               value="<?= isset($selected['email']) ? htmlspecialchars($selected['email']) : '' ?>"
                                required>
                     </div>
                     
@@ -71,7 +79,6 @@ $selectedId = $data['selectedId'] ?? null;
                         <input type="password" 
                                name="password" 
                                placeholder="Leave empty to keep current password">
-                        <small>Leave empty to keep current password</small>
                     </div>
                     
                     <div class="detail-row">
@@ -79,7 +86,7 @@ $selectedId = $data['selectedId'] ?? null;
                         <label class="checkbox-label">
                             <input type="checkbox" 
                                    name="is_admin" 
-                                   <?= $selected['is_admin'] == 1 ? 'checked' : '' ?>>
+                                   <?= (isset($selected['is_admin']) && $selected['is_admin'] == 1) ? 'checked' : '' ?>>
                             Administrator
                         </label>
                     </div>
