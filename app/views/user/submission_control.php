@@ -12,16 +12,22 @@ $selectedId = $data['selectedId'] ?? null;
     <title>Submission Control Panel</title>
     <link rel="stylesheet" href="<?= BASE_URL; ?>/css/style.css">
 </head>
+
 <body class="submission-control-page">
+
 <div class="admin-bg"></div>
+
 <div class="submission-container">
+    
     <div class="submission-header">
         <h1 class="panel-title">Submission Control Panel</h1>
         <a href="<?= BASE_URL; ?>/user/dashboard">
             <span class="admin-label"><?= htmlspecialchars($userName) ?></span>
         </a>
     </div>
+    
     <div class="submission-content">
+        
         <!-- LEFT -->
         <div class="submission-list">
             <?php foreach ($submissions as $sub): ?>
@@ -32,6 +38,7 @@ $selectedId = $data['selectedId'] ?? null;
                 </button>
             <?php endforeach; ?>
         </div>
+        
         <!-- CENTER -->
         <div class="submission-preview">
             <?php if ($selected): ?>
@@ -45,30 +52,38 @@ $selectedId = $data['selectedId'] ?? null;
                 </div>
             <?php endif; ?>
         </div>
+        
         <!-- RIGHT -->
         <div class="submission-actions">
             <button class="action-btn"
                 onclick="location.href='<?= BASE_URL; ?>/usersubmissions/edit/<?= $selectedId ?>'">
                 Edit Submission
             </button>
+
             <button class="action-btn"
                 onclick="deleteSubmission(<?= $selectedId ?>)">
                 Delete Submission
             </button>
+
             <button class="action-btn"
                 onclick="location.href='<?= BASE_URL; ?>/usersubmissions/create'">
                 Create Submission
             </button>
+
             <button class="action-btn fullview-btn" onclick="openFullview()">
                 Fullview
             </button>
         </div>
+        
     </div>
+    
     <div class="corner-deco top-left"></div>
     <div class="corner-deco top-right"></div>
     <div class="corner-deco bottom-left"></div>
     <div class="corner-deco bottom-right"></div>
+    
 </div>
+
 <script>
 function deleteSubmission(id) {
     if (confirm('Are you sure you want to delete this submission?')) {
@@ -76,11 +91,13 @@ function deleteSubmission(id) {
             '<?= BASE_URL; ?>/usersubmissions/delete/' + id;
     }
 }
+
 function openFullview() {
     <?php if ($selected): ?>
         window.open('<?= BASE_URL . htmlspecialchars($selected['image']) ?>', '_blank');
     <?php endif; ?>
 }
 </script>
+
 </body>
 </html>
