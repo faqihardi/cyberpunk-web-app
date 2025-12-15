@@ -107,15 +107,6 @@ Saat ini, aset desain tersedia dalam bentuk **High-Fidelity Mockup**.
 
 ---
 
-## Status Implementasi
-
-🚧 **Work in Progress (WIP)**
-
-* **Backend:** Sudah berjalan secara parsial dan fungsional
-* **Frontend:** Masih menggunakan tampilan dasar (simplified) dan belum sepenuhnya mengikuti desain mockup
-
-Fokus utama saat ini adalah memastikan alur data dan integrasi database berjalan dengan baik.
-
 
 ## Tech Stack
 
@@ -126,7 +117,3 @@ Fokus utama saat ini adalah memastikan alur data dan integrasi database berjalan
 
 ---
 
-
-## Catatan Tambahan
-
-Proyek ini dikembangkan sebagai bagian dari tugas akademik dan masih terbuka untuk pengembangan lanjutan, baik dari sisi UI/UX, performa, maupun fitur tambahan.
