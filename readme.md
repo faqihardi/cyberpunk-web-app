@@ -27,7 +27,7 @@ Saat ini, aset desain tersedia dalam bentuk **High-Fidelity Mockup**.
 
 ---
 
-## Design Preview
+## Web Preview
 
 ### Preview 1 - Home
 

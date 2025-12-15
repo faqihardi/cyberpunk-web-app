@@ -13,14 +13,11 @@ class UsersubmissionsController extends Controller
         $submissions = $submissionModel->getByUserId($_SESSION['user']['user_id']);
         $userName = isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : 'User';
 
-        // Get selected submission (first one by default, or by ID)
         $selected = null;
         $selectedId = null;
         
         if ($id) {
-            // Find submission by ID
             $selected = $submissionModel->findById($id);
-            // Verify ownership
             if ($selected && $selected['user_id'] == $_SESSION['user']['user_id']) {
                 $selectedId = $id;
             } else {
@@ -28,7 +25,6 @@ class UsersubmissionsController extends Controller
             }
         }
         
-        // If no valid selection, pick first submission
         if (!$selected && !empty($submissions)) {
             $selected = $submissions[0];
             $selectedId = $selected['id'];
@@ -73,9 +69,7 @@ class UsersubmissionsController extends Controller
             'image'      => ''
         ];
 
-        // Handle image upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            // Buat folder jika belum ada
             $uploadDir = __DIR__ . '/../../public/uploads/submissions/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
@@ -93,7 +87,6 @@ class UsersubmissionsController extends Controller
         $submissionModel = $this->model('Submission');
         $newId = $submissionModel->create($data);
 
-        // Redirect ke submission yang baru dibuat
         header('Location: ' . BASE_URL . '/usersubmissions/index/' . $newId);
         exit;
     }
@@ -144,12 +137,10 @@ class UsersubmissionsController extends Controller
             'theme'      => $_POST['theme'] ?? '',
             'author'     => $_POST['author'] ?? '',
             'user_id'    => $_SESSION['user']['user_id'],
-            'image'      => $submission['image'] // Keep old image by default
+            'image'      => $submission['image']
         ];
 
-        // Handle new image upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            // Delete old image if exists
             if (!empty($submission['image'])) {
                 $oldImagePath = __DIR__ . '/../../public' . $submission['image'];
                 if (file_exists($oldImagePath)) {
@@ -157,7 +148,6 @@ class UsersubmissionsController extends Controller
                 }
             }
 
-            // Upload new image
             $uploadDir = __DIR__ . '/../../public/uploads/submissions/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
@@ -174,7 +164,6 @@ class UsersubmissionsController extends Controller
 
         $submissionModel->update($id, $data);
 
-        // Redirect ke submission yang baru di-update
         header('Location: ' . BASE_URL . '/usersubmissions/index/' . $id);
         exit;
     }
@@ -190,7 +179,6 @@ class UsersubmissionsController extends Controller
         $submission = $submissionModel->findById($id);
 
         if ($submission && $submission['user_id'] == $_SESSION['user']['user_id']) {
-            // Delete image file from filesystem
             if (!empty($submission['image'])) {
                 $imagePath = __DIR__ . '/../../public' . $submission['image'];
                 if (file_exists($imagePath)) {
@@ -198,7 +186,6 @@ class UsersubmissionsController extends Controller
                 }
             }
             
-            // Delete from database
             $submissionModel->delete($id);
         }
 

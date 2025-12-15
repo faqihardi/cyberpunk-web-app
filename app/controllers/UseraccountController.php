@@ -58,7 +58,6 @@ class UseraccountController extends Controller
             'email'    => $email
         ];
 
-        // Only update password if provided
         if (!empty($_POST['password'])) {
             $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
         }
