@@ -50,7 +50,7 @@ class App {
             }
         }
 
-        // Params
+        // Parametrrs
         if (!empty($url))
         {
             $this->params = array_values($url);

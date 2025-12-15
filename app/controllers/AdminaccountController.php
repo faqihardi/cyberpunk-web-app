@@ -9,7 +9,7 @@ class AdminaccountController extends AdminController
         $userModel = $this->model('User');
         $users = $userModel->getAll();
 
-        // Set default selected ID ke user pertama jika tidak ada
+        // Set default ke user pertama
         if ($selectedId === null && !empty($users)) {
             $selectedId = $users[0]['id'];
         }
@@ -47,26 +47,22 @@ class AdminaccountController extends AdminController
         $userId = $_POST['user_id'] ?? null;
 
         if (empty($userId)) {
-            // TODO: Set flash message - invalid user
             header('Location: ' . BASE_URL . '/adminaccount');
             exit;
         }
 
-        // Validasi input
         $username = trim($_POST['username'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
         $isAdmin = isset($_POST['is_admin']) ? 1 : 0;
 
         if (empty($username) || empty($email)) {
-            // TODO: Set flash message - required fields
             header('Location: ' . BASE_URL . '/adminaccount/index/' . $userId);
             exit;
         }
 
-        // Validasi email
+        // Validasi eemil
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            // TODO: Set flash message - invalid email
             header('Location: ' . BASE_URL . '/adminaccount/index/' . $userId);
             exit;
         }
@@ -83,7 +79,6 @@ class AdminaccountController extends AdminController
         }
         $userModel->update($userId, $updateData);
 
-        // TODO: Set flash message - success
         header('Location: ' . BASE_URL . '/adminaccount/index/' . $userId);
         exit;
     }
@@ -98,14 +93,11 @@ class AdminaccountController extends AdminController
         $userId = $_POST['user_id'] ?? null;
 
         if (empty($userId)) {
-            // TODO: Set flash message - invalid user
             header('Location: ' . BASE_URL . '/adminaccount');
             exit;
         }
 
-        // Cek jangan sampai hapus diri sendiri
         if ($userId == $this->getAdmin()['id']) {
-            // TODO: Set flash message - cannot delete self
             header('Location: ' . BASE_URL . '/adminaccount/index/' . $userId);
             exit;
         }
@@ -113,7 +105,6 @@ class AdminaccountController extends AdminController
         $userModel = $this->model('User');
         $userModel->delete($userId);
 
-        // TODO: Set flash message - success
         header('Location: ' . BASE_URL . '/adminaccount');
         exit;
     }
@@ -134,27 +125,22 @@ class AdminaccountController extends AdminController
             exit;
         }
 
-        // Validasi input
         $username = trim($_POST['username'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
         $isAdmin = isset($_POST['is_admin']) ? 1 : 0;
 
         if (empty($username) || empty($email) || empty($password)) {
-            // TODO: Set flash message - required fields
             header('Location: ' . BASE_URL . '/adminaccount/create');
             exit;
         }
 
-        // Validasi email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            // TODO: Set flash message - invalid email
             header('Location: ' . BASE_URL . '/adminaccount/create');
             exit;
         }
 
         $userModel = $this->model('User');
-        // Optionally check for duplicate email/username here
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $userModel->create([
             'name' => trim($_POST['name'] ?? ''),
@@ -164,7 +150,6 @@ class AdminaccountController extends AdminController
             'is_admin' => $isAdmin
         ]);
 
-        // TODO: Set flash message - success
         header('Location: ' . BASE_URL . '/adminaccount');
         exit;
     }

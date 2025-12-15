@@ -15,7 +15,6 @@ class AuthController extends Controller
             session_start();
         }
 
-        // Only handle POST requests for registration
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location:'.BASE_URL.'/auth/showregister');
             exit;
@@ -23,7 +22,6 @@ class AuthController extends Controller
 
         $userModel = $this->model('User');
 
-        // Simple input retrieval and trimming
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
         $username = isset($_POST['username']) ? trim($_POST['username']) : '';
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -62,7 +60,6 @@ class AuthController extends Controller
             exit;
         }
 
-        // Check for existing username or email
         if ($userModel->existsByUsernameOrEmail($username, $email)) {
             $_SESSION['auth_errors'] = ['Username or email already taken.'];
             $_SESSION['old'] = [
@@ -74,7 +71,6 @@ class AuthController extends Controller
             exit;
         }
 
-        // Hash password and insert user
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
         $created = $userModel->create([
             'name' => $name,
@@ -138,7 +134,6 @@ class AuthController extends Controller
             exit;
         }
 
-        // Successful login: regenerate session id to prevent fixation
         session_regenerate_id(true);
 
         $_SESSION['user'] = [
@@ -149,7 +144,6 @@ class AuthController extends Controller
             'is_admin' => (int) $user['is_admin']
         ];
 
-        // 🔥 REDIRECT BERDASARKAN ROLE
         if ((int)$user['is_admin'] === 1) {
             header('Location: ' . BASE_URL . '/admindashboard');
         } else {
@@ -163,12 +157,10 @@ class AuthController extends Controller
             session_start();
         }
 
-        // Unset and destroy session
         if (isset($_SESSION['user'])) {
             unset($_SESSION['user']);
         }
 
-        // Clear any auth messages
         if (isset($_SESSION['auth_errors'])) {
             unset($_SESSION['auth_errors']);
         }

@@ -10,7 +10,7 @@ class CharactersController extends Controller
            $slides = array_chunk($characters, 2);
            $this->view('characters/index', compact('slides'));
 
-        // pecah jadi 2 character per slide
+        // pecah 2 per page
         $slides = array_chunk($characters, 2);
         $this->view('characters/index', compact('slides'));    
     }

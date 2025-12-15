@@ -31,7 +31,6 @@ class AdminnewsController extends AdminController
 
         // Validasi input
         if (empty($version) || empty($header) || empty($content)) {
-            // TODO: Set flash message untuk error
             header('Location: ' . BASE_URL . '/adminnews');
             exit;
         }
@@ -40,7 +39,6 @@ class AdminnewsController extends AdminController
         $newsList = $newsModel->getAll();
         $admin = $this->getAdmin();
         if (!empty($newsList)) {
-            // Update the latest news entry
             $newsModel->update($newsList[0]['id'], [
                 'version' => $version,
                 'header' => $header,
@@ -48,7 +46,6 @@ class AdminnewsController extends AdminController
                 'updated_by' => $admin['user_id']
             ]);
         } else {
-            // Create new news entry
             $newsModel->create([
                 'version' => $version,
                 'header' => $header,
@@ -56,7 +53,7 @@ class AdminnewsController extends AdminController
                 'updated_by' => $admin['user_id']
             ]);
         }
-        // TODO: Set flash message untuk sukses
+
         header('Location: ' . BASE_URL . '/adminnews');
         exit;
     }

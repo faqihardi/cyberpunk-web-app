@@ -2,23 +2,22 @@
 
 class Database
 {
-    // Attribute to connect database
+
     private $host = DB_HOST;
     private $user = DB_USER;
     private $password = DB_PASS;
     private $dbname = DB_NAME;
 
-    // Attribute to handle database operation
+
     private $dbh;
     private $stmt;
 
-    // Constructor method to initialize database connection
+
     public function __construct()
     {
-        // Data Source Name (DSN) 
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
 
-        // Options
+
         $options = [
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION

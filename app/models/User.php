@@ -35,21 +35,48 @@ class User
         return $this->db->result();
     }
 
+    public function findByUsername($username)
+    {
+        $this->db->query('SELECT user_id as id, name, username, email, is_admin FROM users WHERE username = :username');
+        $this->db->bind(':username', $username);
+        return $this->db->result();
+    }
+
+    public function findByEmail($email)
+    {
+        $this->db->query('SELECT user_id as id, name, username, email, is_admin FROM users WHERE email = :email');
+        $this->db->bind(':email', $email);
+        return $this->db->result();
+    }
+
     public function update($id, $data)
     {
-        $query = 'UPDATE users SET name = :name, username = :username, email = :email, is_admin = :is_admin';
+        $query = 'UPDATE users SET name = :name, username = :username, email = :email';
+        
+        // updaet admin
+        if (isset($data['is_admin'])) {
+            $query .= ', is_admin = :is_admin';
+        }
+        
         if (!empty($data['password'])) {
             $query .= ', password = :password';
         }
+        
         $query .= ' WHERE user_id = :id';
+        
         $this->db->query($query);
         $this->db->bind(':name', $data['name']);
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':email', $data['email']);
-        $this->db->bind(':is_admin', $data['is_admin']);
+        
+        if (isset($data['is_admin'])) {
+            $this->db->bind(':is_admin', $data['is_admin']);
+        }
+        
         if (!empty($data['password'])) {
             $this->db->bind(':password', $data['password']);
         }
+        
         $this->db->bind(':id', $id);
         return $this->db->execute();
     }

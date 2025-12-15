@@ -43,7 +43,7 @@ class AdminsubmissionController extends AdminController
             header('Location: ' . BASE_URL . '/adminsubmission');
             exit;
         }
-        // Map DB fields to form fields
+
         $submission['user'] = $admin['name'];
         $this->view('admin/submission_create', [
             'adminName' => $admin['name'],
@@ -74,7 +74,7 @@ class AdminsubmissionController extends AdminController
             exit;
         }
 
-        // Handle image upload (keep old if not replaced)
+        // image handlerr
         $imagePath = $existing['image'];
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = __DIR__ . '/../../public/uploads/submission/';
@@ -113,7 +113,7 @@ class AdminsubmissionController extends AdminController
                 'resolution' => '',
                 'theme' => '',
                 'author' => '',
-                'user' => $admin['name'], // Default ke nama admin yang login
+                'user' => $admin['name'], 
                 'image' => ''
             ]
         ]);
@@ -133,8 +133,7 @@ class AdminsubmissionController extends AdminController
         $author = isset($_POST['author']) ? trim($_POST['author']) : '';
         $user_id = $admin['user_id'];
 
-        // Handle image upload
-        $imagePath = '/uploads/submission/default.png'; // default fallback (ensure this file exists)
+        $imagePath = '/uploads/submission/default.png';
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = __DIR__ . '/../../public/uploads/submission/';
             if (!is_dir($uploadDir)) {
@@ -172,7 +171,6 @@ class AdminsubmissionController extends AdminController
         $submissionModel = $this->model('Submission');
         $submissionModel->delete($id);
 
-        // TODO: Set flash message untuk sukses
         header('Location: ' . BASE_URL . '/adminsubmission');
         exit;
     }

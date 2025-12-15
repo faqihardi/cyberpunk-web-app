@@ -5,7 +5,12 @@ class Submission {
         require_once __DIR__ . '/../core/Database.php';
         $this->db = new Database();
     }
-
+    
+    public function getByUserId($userId) {
+        $this->db->query('SELECT s.*, u.username as uploader FROM submissions s LEFT JOIN users u ON s.user_id = u.user_id WHERE s.user_id = :user_id ORDER BY s.created_at DESC');
+        $this->db->bind(':user_id', $userId);
+        return $this->db->results();
+    }
     public function getAll() {
         $this->db->query('SELECT s.*, u.username as uploader FROM submissions s LEFT JOIN users u ON s.user_id = u.user_id ORDER BY s.created_at DESC');
         return $this->db->results();
@@ -43,6 +48,13 @@ class Submission {
     public function delete($id) {
         $this->db->query('DELETE FROM submissions WHERE id = :id');
         $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    public function deleteByUserId($userId)
+    {
+        $this->db->query('DELETE FROM submissions WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $userId);
         return $this->db->execute();
     }
 }
